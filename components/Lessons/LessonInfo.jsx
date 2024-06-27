@@ -16,6 +16,7 @@ const LessonInfo = ({
   players,
   refetch,
   hasGivenFeedback,
+  finished,
 }) => {
   const [modal, setModal] = useState('');
   const hideModal = () => setModal('');
@@ -51,7 +52,7 @@ const LessonInfo = ({
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center">
                 <strong> Informații </strong>
-                {!lessonPlayers.includes(me.me) && today < new Date(date) && (
+                {!lessonPlayers.includes(me.me) && !finished && (
                   <Button
                     className="bg-green-500 text-gray-100 p-3 hover:bg-green-400"
                     onClick={() => handleTakePart(true)}
@@ -59,7 +60,7 @@ const LessonInfo = ({
                     Participă
                   </Button>
                 )}
-                {lessonPlayers.includes(me.me) && today < new Date(date) && (
+                {lessonPlayers.includes(me.me) && !finished && (
                   <Button
                     className="bg-red-500 text-gray-100 p-3 hover:bg-red-400"
                     onClick={() => handleTakePart(false)}
@@ -67,7 +68,7 @@ const LessonInfo = ({
                     Renunta
                   </Button>
                 )}
-                {lessonPlayers.includes(me.me) && today > new Date(date) && !hasGivenFeedback && (
+                {lessonPlayers.includes(me.me) && finished && !hasGivenFeedback && (
                   <Button
                     className="w-fit sm:w-fit button flex px-5 py-2 rounded-xl gap-6 items-center full bg-primary border-none text-white"
                     onClick={handleFeedback}

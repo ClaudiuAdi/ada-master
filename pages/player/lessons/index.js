@@ -1,4 +1,4 @@
-import { useQuery } from '../../../hooks';
+import { useProfile, useQuery } from '../../../hooks';
 import { format } from 'date-fns';
 import { MenuPlayer } from '../../../components';
 import { SuggestionButton, SuggestionComponent } from '../../../components/AI';
@@ -7,16 +7,20 @@ import { useRouter } from 'next/router';
 const PlayerLessonsTable = () => {
   const router = useRouter();
   const { data } = useQuery(`/lessons`);
+  const { me } = useProfile();
 
-  const renderLesson = ({ _id, name, coach, date, location, sport }, index) => {
+  const renderLesson = ({ _id, name, coach, date, location, sport, players }, index) => {
     const handleClick = () => router.push(`./lessons/${_id}`);
     return (
-      <tr key={`area-${name}`}>
+      <tr key={`area-${name}`} onClick={() => handleClick(_id)}>
         <td>{index + 1}</td>
         <td>
-          <strong>{name}</strong>
+          <div className="flex items-center justify-center gap-1">
+            <strong>{name}</strong>
+            <span>{players.map((player) => player._id).includes(me.me) ? '✅' : ''}</span>
+          </div>
         </td>
-        <td onClick={() => handleClick(_id)}>
+        <td>
           {coach.last_name}, {coach.first_name}{' '}
         </td>
         <td>{format(new Date(date), 'dd-MM-yyyy')} </td>
